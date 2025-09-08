@@ -5,3 +5,6 @@ print-text-job:
     stage: echoPrintText
     script:
       - echo "This is a simple file created by A Security Guru in GitLab"
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
