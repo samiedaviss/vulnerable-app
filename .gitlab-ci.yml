@@ -3,7 +3,7 @@ include:
   - template: DAST.gitlab-ci.yml
 
 variables:
-  DAST_WEBSITE: http://testphp.vulnweb.com
+  DAST_WEBSITE: http://localhost:8080
   DAST_FULL_SCAN_ENABLED: "true" 
   DAST_BROWSER_SCAN: "true"
 
@@ -23,3 +23,4 @@ docker-compose-build:
     - docker compose up -d --build --force-recreate
     - echo "Services are up and running."
     - docker ps
+    - sleep
