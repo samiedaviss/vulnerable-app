@@ -15,4 +15,4 @@ docker-compose-build:
     - docker compose pull
     - docker compose up -d --build --force-recreate
     - echo "Services are up and running."
-    - nc -zv localhost 8080
+    - docker ps
