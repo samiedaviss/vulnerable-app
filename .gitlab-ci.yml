@@ -3,7 +3,7 @@ include:
   - template: DAST.gitlab-ci.yml
 
 variables:
-  DAST_WEBSITE: http://localhost:1337
+  DAST_WEBSITE: http://testphp.vulnweb.com
   DAST_FULL_SCAN_ENABLED: "true" 
   DAST_BROWSER_SCAN: "true"
 
