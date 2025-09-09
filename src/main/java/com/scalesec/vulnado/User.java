@@ -41,12 +41,13 @@ public class User {
     User user = null;
     try {
       Connection cxn = Postgres.connection();
-      stmt = cxn.createStatement();
+      String query = "select * from users where username = ? limit 1";
+      stmt = cxn.prepareStatement(query);
       System.out.println("Opened database successfully");
 
-      String query = "select * from users where username = '" + un + "' limit 1";
       System.out.println(query);
-      ResultSet rs = stmt.executeQuery(query);
+      ((java.sql.PreparedStatement) stmt).setString(1, un);
+      ResultSet rs = stmt.executeQuery();
       if (rs.next()) {
         String user_id = rs.getString("user_id");
         String username = rs.getString("username");
@@ -62,3 +63,4 @@ public class User {
     }
   }
 }
+
