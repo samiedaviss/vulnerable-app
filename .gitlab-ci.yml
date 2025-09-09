@@ -12,5 +12,6 @@ docker-compose-build:
   stage: build
   script:
     - echo "Building services with Docker Compose..."
+    - docker compose pull
     - docker compose up --build --force-recreate
     - echo "Services are up and running."
