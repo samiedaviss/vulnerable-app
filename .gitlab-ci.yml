@@ -14,4 +14,3 @@ docker-compose-build:
     - echo "Building services with Docker Compose..."
     - docker compose up
     - echo "Services are up and running."
-    - docker compose ps
