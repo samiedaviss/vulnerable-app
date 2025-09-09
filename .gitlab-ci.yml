@@ -7,6 +7,7 @@ stages:
   - build
   - test
   - deploy
+  - dast
 services:
   - docker:latest
 image: docker:latest
