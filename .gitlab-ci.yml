@@ -5,4 +5,13 @@ stages:
   - build
   - test
   - deploy
-    docker compose up
+services:
+  - docker:latest
+image: docker:latest
+docker-compose-build:
+  stage: build
+  script:
+    - echo "Building services with Docker Compose..."
+    - docker compose up
+    - echo "Services are up and running."
+    - docker compose ps
