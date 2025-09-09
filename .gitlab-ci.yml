@@ -5,3 +5,4 @@ stages:
   - build
   - test
   - deploy
+    docker compose up
