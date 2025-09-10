@@ -3,6 +3,9 @@ include:
   - template: Jobs/SAST-IaC.gitlab-ci.yml
   #- template: DAST.gitlab-ci.yml
 
+variables:
+  GITLAB_ADVANCED_SAST_ENABLED: 'true'
+
 #variables:
   #DAST_WEBSITE: http://localhost:8080
   #DAST_FULL_SCAN_ENABLED: "true" 
