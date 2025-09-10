@@ -1,5 +1,6 @@
 include:
   - template: Jobs/SAST.gitlab-ci.yml
+  - template: Jobs/SAST-IaC.gitlab-ci.yml
   #- template: DAST.gitlab-ci.yml
 
 #variables:
