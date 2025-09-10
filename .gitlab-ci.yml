@@ -1,29 +1,38 @@
-include:
-  - template: Jobs/SAST.gitlab-ci.yml
-  - template: Jobs/SAST-IaC.gitlab-ci.yml
-  #- template: DAST.gitlab-ci.yml
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/user/application_security/secret_detection/pipeline/configure
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 
-variables:
-  GITLAB_ADVANCED_SAST_ENABLED: 'true'
-
-#variables:
-  #DAST_WEBSITE: http://localhost:8080
-  #DAST_FULL_SCAN_ENABLED: "true" 
-  #DAST_BROWSER_SCAN: "true"
-
+# container_scanning:
+#   variables:
+#     DOCKER_IMAGE: ...
+#     DOCKER_USER: ...
+#     DOCKER_PASSWORD: ...
+:include:
+- :template: Jobs/SAST.gitlab-ci.yml
+- :template: Jobs/SAST-IaC.gitlab-ci.yml
+:variables:
+  :GITLAB_ADVANCED_SAST_ENABLED: 'true'
+:stages:
+- build
+- test
+- deploy
+- dast
+:services:
+- docker:latest
+:image: docker:latest
+:docker-compose-build:
+  :stage: build
+  :script:
+  - echo "Building services with Docker Compose..."
+  - docker compose pull
+  - docker compose up -d --build --force-recreate
+  - echo "Services are up and running."
+  - docker ps
 stages:
-  - build
-  - test
-  - deploy
-  - dast
-services:
-  - docker:latest
-image: docker:latest
-docker-compose-build:
-  stage: build
-  script:
-    - echo "Building services with Docker Compose..."
-    - docker compose pull
-    - docker compose up -d --build --force-recreate
-    - echo "Services are up and running."
-    - docker ps
+- test
+include:
+- template: Jobs/Container-Scanning.gitlab-ci.yml
