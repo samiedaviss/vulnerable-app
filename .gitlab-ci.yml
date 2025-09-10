@@ -1,11 +1,15 @@
 include:
   - template: Jobs/SAST.gitlab-ci.yml
   - template: Jobs/SAST-IaC.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.latest.gitlab-ci.yml
+
+
   #- template: Jobs/Container-Scanning.gitlab-ci.yml
   #- template: DAST.gitlab-ci.yml
 
 variables:
   GITLAB_ADVANCED_SAST_ENABLED: 'true'
+  DS_ENFORCE_NEW_ANALYZER: 'true'
 
 #variables:
   #DAST_WEBSITE: http://localhost:8080
