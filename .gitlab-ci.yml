@@ -22,7 +22,7 @@ deploy:
   image: docker:20.10.16
   stage: build
   script:
-    - docker-compose up
+    - docker-compose up --no-recreate
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker pull $CI_REGISTRY_IMAGE:latest || true
     - docker build --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
