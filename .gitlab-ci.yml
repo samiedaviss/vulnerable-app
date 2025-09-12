@@ -3,7 +3,7 @@ include:
   - template: Jobs/SAST-IaC.gitlab-ci.yml #kicks tool
 
 variables:
-  GITLAB_ADVANCED_SAST_ENABLED: 'true'
+  GITLAB_ADVANCED_SAST_ENABLED: 'truee'
 
 stages:
   - build
