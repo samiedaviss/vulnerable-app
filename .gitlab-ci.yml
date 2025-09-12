@@ -1,34 +1,34 @@
 include:
-  - template: Jobs/SAST.gitlab-ci.yml
-  - template: Jobs/SAST-IaC.gitlab-ci.yml
-  #- template: Jobs/Dependency-Scanning.latest.gitlab-ci.yml
-
-
-  #- template: Jobs/Container-Scanning.gitlab-ci.yml
-  #- template: DAST.gitlab-ci.yml
+  - template: Jobs/SAST.gitlab-ci.yml #semgrep tool
+  - template: Jobs/SAST-IaC.gitlab-ci.yml #kicks tool
+  - template: DAST.gitlab-ci.yml #owasp-zap tool
 
 variables:
   GITLAB_ADVANCED_SAST_ENABLED: 'true'
-  #DS_ENFORCE_NEW_ANALYZER: 'true'
-
-#variables:
-  #DAST_WEBSITE: http://localhost:8080
-  #DAST_FULL_SCAN_ENABLED: "true" 
-  #DAST_BROWSER_SCAN: "true"
+  DAST_TARGET_URL: https://yourapp
+  DAST_FULL_SCAN: "true" # do a full scan
+  DAST_BROWSER_SCAN: "true" # use the browser-based GitLab DAST crawler
+  FF_NETWORK_PER_BUILD: "true"
 
 stages:
   - build
   - test
-  - deploy
   - dast
-services:
-  - docker:latest
-image: docker:latest
-docker-compose-build:
+
+deploy:
+  services:
+  - name: docker:dind
+    alias: dind
+  image: docker:20.10.16
   stage: build
   script:
-    - echo "Building services with Docker Compose..."
-    - docker compose pull
-    - docker compose up -d --build --force-recreate
-    - echo "Services are up and running."
-    - docker ps
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+
+dast:
+services: # use services to link your app container to the dast job
+    - name: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+      alias: yourapp
