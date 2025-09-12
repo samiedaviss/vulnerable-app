@@ -1,19 +1,13 @@
 include:
   - template: Jobs/SAST.gitlab-ci.yml #semgrep tool
   - template: Jobs/SAST-IaC.gitlab-ci.yml #kicks tool
-  - template: DAST.gitlab-ci.yml #owasp-zap tool
 
 variables:
   GITLAB_ADVANCED_SAST_ENABLED: 'true'
-  DAST_TARGET_URL: https://yourapp
-  DAST_FULL_SCAN: "true" # do a full scan
-  DAST_BROWSER_SCAN: "true" # use the browser-based GitLab DAST crawler
-  FF_NETWORK_PER_BUILD: "true"
 
 stages:
   - build
   - test
-  - dast
 
 deploy:
   services:
@@ -28,8 +22,3 @@ deploy:
     - docker build --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:latest .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
     - docker push $CI_REGISTRY_IMAGE:latest
-
-dast:
-  services: # use services to link your app container to the dast job
-    - name: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-      alias: yourapp
