@@ -8,10 +8,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.UUID;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 public class Postgres {
 
@@ -39,7 +35,7 @@ public class Postgres {
             Statement stmt = c.createStatement();
 
             // Create Schema
-            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users(user_id VARCHAR (36) PRIMARY KEY, username VARCHAR (50) UNIQUE NOT NULL, password VARCHAR (200) NOT NULL, created_on TIMESTAMP NOT NULL, last_login TIMESTAMP)");
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS users(user_id VARCHAR (36) PRIMARY KEY, username VARCHAR (50) UNIQUE NOT NULL, password VARCHAR (50) NOT NULL, created_on TIMESTAMP NOT NULL, last_login TIMESTAMP)");
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS comments(id VARCHAR (36) PRIMARY KEY, username VARCHAR (36), body VARCHAR (500), created_on TIMESTAMP NOT NULL)");
 
             // Clean up any existing data
@@ -98,7 +94,7 @@ public class Postgres {
           pStatement = connection().prepareStatement(sql);
           pStatement.setString(1, UUID.randomUUID().toString());
           pStatement.setString(2, username);
-          pStatement.setString(3, hashPassword(password));
+          pStatement.setString(3, md5(password));
           pStatement.executeUpdate();
        } catch(Exception e) {
          e.printStackTrace();
@@ -119,4 +115,3 @@ public class Postgres {
         }
     }
 }
-
