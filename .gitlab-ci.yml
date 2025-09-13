@@ -3,11 +3,18 @@ include:
   - template: Jobs/SAST-IaC.gitlab-ci.yml #kicks tool
 
 variables:
-  GITLAB_ADVANCED_SAST_ENABLED: 'truee'
+  GITLAB_ADVANCED_SAST_ENABLED: 'true'
 
 stages:
   - build
   - test
+
+my_github_triggered_job:
+  stage: build
+    script:
+        - echo "This job runs when triggered by GitHub changes."
+    rules:
+        - if: '$CI_PIPELINE_SOURCE == "trigger"'
 
 deploy:
   services:
