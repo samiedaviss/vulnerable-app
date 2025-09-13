@@ -11,10 +11,10 @@ stages:
 
 my_github_triggered_job:
   stage: build
-    script:
-        - echo "This job runs when triggered by GitHub changes."
-    rules:
-        - if: '$CI_PIPELINE_SOURCE == "trigger"'
+  script:  # Fixed: This was indented incorrectly
+    - echo "This job runs when triggered by GitHub changes."
+  rules:   # Fixed: This was indented incorrectly
+    - if: '$CI_PIPELINE_SOURCE == "trigger"'
 
 deploy:
   services:
