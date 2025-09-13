@@ -1,5 +1,5 @@
 package com.scalesec.vulnado;
-
+//
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.math.BigInteger;
