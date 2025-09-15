@@ -38,15 +38,22 @@ public class Cowsay {
       input = input.substring(0, 1000);
     }
     
-    // Allow only safe characters: letters, numbers, spaces, and basic punctuation
-    // Remove potentially dangerous characters that could be used for command injection
-    String sanitized = input.replaceAll("[^a-zA-Z0-9\s.,!?'\"\-_()\[\]{}:;]", "");
+    // Use whitelist approach: only allow safe characters
+    // Allow letters, numbers, spaces, and minimal safe punctuation
+    String sanitized = input.replaceAll("[^a-zA-Z0-9\s.,!?\-]", "");
     
-    // Additional safety: remove any sequences that might be interpreted as command separators
-    sanitized = sanitized.replaceAll("[;&|`$]", "");
+    // Remove any potential command injection sequences
+    sanitized = sanitized.replaceAll("[\n\r\t]", " ");
+    
+    // Trim whitespace and ensure it's not empty after sanitization
+    sanitized = sanitized.trim();
+    if (sanitized.isEmpty()) {
+      return "Hello World"; // Default safe message
+    }
     
     return sanitized;
   }
 }
+
 
 
