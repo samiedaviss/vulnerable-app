@@ -10,6 +10,9 @@ public class Cowsay {
     
     // Validate and sanitize input to prevent command injection
     String sanitizedInput = sanitizeInput(input);
+    if (sanitizedInput.isEmpty()) {
+      return "Error: Invalid input provided";
+    }
     processBuilder.command("/usr/games/cowsay", sanitizedInput);
 
     StringBuilder output = new StringBuilder();
@@ -48,5 +51,6 @@ public class Cowsay {
     return sanitized;
   }
 }
+
 
 
