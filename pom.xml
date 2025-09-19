@@ -66,7 +66,9 @@
 		    <scope>runtime</scope>
 		</dependency>
 
-
+    </dependencies>
+	<build>
+	<plugins>
 <!--# Changes for Software Composition Analysis Scan using Snyk #By A Security Guru-->
 		<plugin>
 			<groupId>io.snyk</groupId>
