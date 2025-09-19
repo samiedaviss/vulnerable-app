@@ -10,12 +10,12 @@ stages:
   - test
   - runSCAScanUsingSnyk
 
-run-sca-job:
-    stage: runSCAScanUsingSnyk
-    script:
-    - command -v snyk || npm install -g snyk
-    - snyk auth $SNYK_TOKEN
-    - snyk test --severity-threshold=high # Scan for open-source vulnerabilities with high severity
+# Move the Snyk scanning to a separate job with appropriate Node.js image
+runSCAScanUsingSnyk:
+  image: node:18
+  script:
+    - npm install -g snyk
+    - snyk test
 
 my_github_triggered_job:
   stage: build
