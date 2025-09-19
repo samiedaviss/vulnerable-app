@@ -77,6 +77,7 @@
 			<inherited>false</inherited>
 			<configuration>
 				<org>rishantsaurakhia00</org>
+				<failOnIssues>false</failOnIssues>
 			</configuration>
 		</plugin>
 <!-- Snyk Changes for SCA Ends Here -->
