@@ -13,7 +13,7 @@ stages:
 run-sca-job:
     stage: runSCAScanUsingSnyk
     image: snyk/snyk:latest # Use the official Snyk Docker image
-  script:
+    script:
     - snyk auth $SNYK_TOKEN
     - snyk test --severity-threshold=high # Scan for open-source vulnerabilities with high severity
     - snyk monitor
