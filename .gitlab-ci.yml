@@ -12,19 +12,10 @@ stages:
 
 # Move the Snyk scanning to a separate job with appropriate Node.js image
 runSCAScanUsingSnyk:
-  image: node:latest
+  image: maven:3.8.5-openjdk-17-slim
   script:
-    - npm install -g npm@latest
-    - npm install -g snyk
-    - npm install snyk-to-html -g
-    - snyk --help
-    - snyk auth $SNYK_TOKEN
-    #- snyk monitor --project-name=$CI_PROJECT_NAME
-    - snyk test --json | snyk-to-html - o snyk_results.html
-  artifacts:
-    when: always
-    paths:
-      - snyk_results.html
+    - export $SNYK_TOKEN
+    - mvn snyk:test -fn
 
 my_github_triggered_job:
   stage: build
