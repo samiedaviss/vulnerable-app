@@ -12,11 +12,10 @@ stages:
 
 run-sca-job:
     stage: runSCAScanUsingSnyk
-    image: snyk/snyk-cli # Use the official Snyk Docker image
     script:
+    - command -v snyk || npm install -g snyk
     - snyk auth $SNYK_TOKEN
     - snyk test --severity-threshold=high # Scan for open-source vulnerabilities with high severity
-    - snyk monitor
 
 my_github_triggered_job:
   stage: build
