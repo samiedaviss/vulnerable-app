@@ -1,9 +1,9 @@
-include:
-  - template: Jobs/SAST.gitlab-ci.yml #semgrep tool
-  - template: Jobs/SAST-IaC.gitlab-ci.yml #kicks tool
+#include:
+#  - template: Jobs/SAST.gitlab-ci.yml #semgrep tool
+#  - template: Jobs/SAST-IaC.gitlab-ci.yml #kicks tool
 
-variables:
-  GITLAB_ADVANCED_SAST_ENABLED: 'true'
+#variables:
+#  GITLAB_ADVANCED_SAST_ENABLED: 'true'
 
 stages:
   - build
@@ -12,7 +12,7 @@ stages:
 
 run-sca-job:
     stage: runSCAScanUsingSnyk
-    image: snyk/snyk:latest # Use the official Snyk Docker image
+    image: snyk/snyk-cli:latest # Use the official Snyk Docker image
     script:
     - snyk auth $SNYK_TOKEN
     - snyk test --severity-threshold=high # Scan for open-source vulnerabilities with high severity
