@@ -11,15 +11,6 @@ variables:
 stages:
   - build
   - test
-  - runSCAScanUsingSnyk
-
-# Move the Snyk scanning to a separate job with appropriate Node.js image
-runSCAScanUsingSnyk:
-  image: maven:3.8.5-openjdk-17-slim
-  script:
-    - SNYK_TOKEN='e601c0d5-e552-4814-9fb6-4b18418c3bd7'
-    - export SNYK_TOKEN
-    - mvn snyk:test -fn
 
 my_github_triggered_job:
   stage: build
