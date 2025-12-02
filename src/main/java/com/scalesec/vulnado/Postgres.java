@@ -1,5 +1,5 @@
 package com.scalesec.vulnado;
-//
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.math.BigInteger;
@@ -58,19 +58,14 @@ public class Postgres {
         }
     }
 
-    // Java program to securely hash passwords
-    public static String hashPassword(String input)
+    // Java program to calculate MD5 hash value
+    public static String md5(String input)
     {
         try {
 
-            // Use a secure hashing algorithm (SHA-512)
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            
-            // Add a random salt to prevent rainbow table attacks
-            byte[] salt = new byte[16];
-            java.security.SecureRandom.getInstanceStrong().nextBytes(salt);
-            md.update(salt);
-            
+            // Static getInstance method is called with hashing MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
             // digest() method is called to calculate message digest
             //  of an input digest() return array of byte
             byte[] messageDigest = md.digest(input.getBytes());
@@ -119,5 +114,3 @@ public class Postgres {
             e.printStackTrace();
         }
     }
-}
-
