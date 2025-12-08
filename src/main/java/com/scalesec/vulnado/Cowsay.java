@@ -5,8 +5,11 @@ import java.io.InputStreamReader;
 
 public class Cowsay {
   public static String run(String input) {
+    // Validate and sanitize input to prevent command injection
+    String sanitizedInput = input.replaceAll("[;&|<>]", "");
+    
     ProcessBuilder processBuilder = new ProcessBuilder();
-    processBuilder.command("/usr/games/cowsay", input);
+    processBuilder.command("/usr/games/cowsay", sanitizedInput);
     
     StringBuilder output = new StringBuilder();
 
@@ -24,4 +27,5 @@ public class Cowsay {
     return output.toString();
   }
 }
+
 
