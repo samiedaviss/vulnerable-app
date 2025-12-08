@@ -58,32 +58,37 @@ public class Postgres {
         }
     }
 
-    // Java program to calculate MD5 hash value
-    public static String md5(String input)
+    // Secure password hashing using PBKDF2
+    public static String hashPassword(String password)
     {
         try {
-
-            // Static getInstance method is called with hashing MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
-
-            // digest() method is called to calculate message digest
-            //  of an input digest() return array of byte
-            byte[] messageDigest = md.digest(input.getBytes());
-
-            // Convert byte array into signum representation
-            BigInteger no = new BigInteger(1, messageDigest);
-
-            // Convert message digest into hex value
-            String hashtext = no.toString(16);
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
-            }
-            return hashtext;
-        }
-
-        // For specifying wrong message digest algorithms
-        catch (NoSuchAlgorithmException e) {
+            // Generate a random salt
+            byte[] salt = new byte[16];
+            java.security.SecureRandom random = new java.security.SecureRandom();
+            random.nextBytes(salt);
+            
+            // PBKDF2 with HMAC-SHA256, 65536 iterations, 256-bit key
+            javax.crypto.spec.PBEKeySpec spec = new javax.crypto.spec.PBEKeySpec(
+                password.toCharArray(), salt, 65536, 256);
+            javax.crypto.SecretKeyFactory factory = javax.crypto.SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            
+            // Format: iterations:salt:hash
+            return "65536:" + toHex(salt) + ":" + toHex(hash);
+        } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    // Convert bytes to hex string
+    private static String toHex(byte[] array) {
+        BigInteger bi = new BigInteger(1, array);
+        String hex = bi.toString(16);
+        int paddingLength = (array.length * 2) - hex.length();
+        if (paddingLength > 0) {
+            return String.format("%0" + paddingLength + "d", 0) + hex;
+        } else {
+            return hex;
         }
     }
 
@@ -114,3 +119,4 @@ public class Postgres {
             e.printStackTrace();
         }
     }
+
